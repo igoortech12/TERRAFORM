@@ -1,0 +1,112 @@
+YOUTUBE
+Terraform explained in 15 mins | Terraform Tutorial for Beginners
+    https://youtu.be/l5k1ai_GBDE
+
+Whats is Terraform?
+What is Terraform used for?
+Difference between Terraform and Ansible
+Terraform Architecture & Commands
+
+WHAT IS TERRAFORM?
+    Automate and manage your infrastructure
+    Your platform
+    And services that run on that platform 
+        open source
+        declarative (= define WAHT end result you want)
+        Imperative = define exact steps - HOW
+
+    Tool for infrastructure provisioning
+        What does that mean?
+        Prepare infrastructure
+            1-Private network
+            2-EC2 server instances
+            3-Install Docker
+            4-Security
+
+        Provisoning infrastructure
+            create VPC
+            spin up servers
+            create AWS users and permissions
+            install Docker
+
+DIFFERENCE ANSIBLE AND TERRAFORM?
+    Which one to use?
+        Both: infrastructure as a Code.
+        Both Automate: provisioning, configuring and managing the infrastructure
+
+    Terraform 
+        Mainly infrastructure provisioning tool 
+        CAN deploy apps
+
+        BETTER: for infrastructure
+
+    Ansible
+        Mainly a configuration tool
+            - configure that infrastructure
+            - deploy apps
+            - install/update software
+        
+        BETTER: for configuring that infrastructure
+
+HOW DOES TERRAFORM WORK?
+    How does Terraform connect to the platform provider?
+
+    Terraform Architecture
+
+    Examples configuration Files
+
+    # Configure the AWS Provider
+    provider "aws" {
+        version = "~> 2.0"
+        region = "us-east-1"
+    }  
+
+    # Create a VPC
+    resource "aws vpc" "example" {
+        cidr_block = "10.0.0.0/16" 
+    }
+
+    # Configure the Kubernetes Provider
+    provider "kubernetes" {
+        config_context_auth_info = "ops"
+        config_context_cluster = "mycluster"
+    }
+
+    resource kubernetes_namespace "example" {
+        metadata {
+            name = "my-firts-namespace"
+        }
+    }
+
+    DECLARATIVE vs IMPERATIVE
+    What does declarative mean exactly?
+
+    You define the end state in your config file:
+        - 5 servers with following network
+        - AWS user with following permissions
+
+    Benefits when updating the infrastructure
+    IMPERATIVE config file 
+        - remove 2 servers
+        - add firewakk config 
+        - add permissions to AWS user
+        
+        You give instructions
+    
+    DECLARATIVE config file 
+        - 7 servers
+        - this firewall config
+        - User with following permissions
+
+        Figure out yourself what needs to be done
+        Adjust old config file and re-execute
+        Clean and small config file
+        Always know the current setup
+
+    TERRAFORM COMMANDS FOR DIFFERENT STAGES
+        Refresh: query infrastructure provider to get current state.
+        Plan: create an execution plan.
+        Apply: execute the plan.
+        Destroy: destroy the resources/infrastructure
+        
+    
