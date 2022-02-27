@@ -1,3 +1,9 @@
-FROM scratch
-ADD ubuntu-bionic-oci-amd64-root.tar.gz /
-CMD ["bash"]
+FROM ubuntu
+RUN apt-get update
+RUN apt-get upgrade --yes
+RUN apt-get install sudo --yes
+RUN apt-get update && apt-get install -y gnupg software-properties-common curl
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+RUN apt-get update && apt-get install terraform
+CMD ["/bin/bash"]
