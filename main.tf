@@ -10,14 +10,27 @@ resource "aws_instance" "hello_world" {
   count = 1
   ami           = "ami-04505e74c0741db8d"
   instance_type = "t2.micro"
+  
   user_data = <<-EOF
               #!/bin/bash
-              sudo service apache2 start
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p 8080 &
               EOF
+
   tags = {
-    Name = "Terraform_Hello_World${count.index}"
+    Name = "terraform-example"
   }
-  
+}
+
+resource "aws_security_group" "instance" {
+  name = "terraform-instance-example"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 /*
