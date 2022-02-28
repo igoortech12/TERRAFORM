@@ -10,11 +10,12 @@ resource "aws_instance" "hello_world" {
   count = 1
   ami           = "ami-04505e74c0741db8d"
   instance_type = "t2.micro"
-  
+  vpc_security_group_ids = [aws_security_group.instance.id]
+
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
-              nohup busybox httpd -f -p 8080 &
+              nohup busybox httpd -f -p ${var.server_port} &
               EOF
 
   tags = {
@@ -23,15 +24,51 @@ resource "aws_instance" "hello_world" {
 }
 
 resource "aws_security_group" "instance" {
-  name = "terraform-instance-example"
+  name = "SG_Server_Port"
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = var.server_port
+    to_port     = var.server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Name = "Server_Port"
+  }
 }
+
+variable "server_port" {
+  description = "HTTP Resquest"
+  type        = number
+  default = 8080
+}
+
+output "address_public_ip" {
+  value       = aws_instance.hello_world.public_ip
+  description = "The public IP address of the web server"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 terraform {

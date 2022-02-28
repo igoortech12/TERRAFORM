@@ -17,7 +17,7 @@ resource "aws_instance" "example" {
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
-              nohup busybox httpd -f -p 8080 &
+              nohup busybox httpd -f -p {var.security_group_name} &
               EOF
 
   tags = {
